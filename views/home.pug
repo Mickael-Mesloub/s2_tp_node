@@ -9,18 +9,18 @@ block content
             h2 Inscrivez-vous
             form.ui.large.form(method="post", action="/")
                 .ui.stacked.segment
-                    +field('text', 'firstName', 'Prénom')
-                    +field('text', 'lastName', 'Nom de famille')
-                    +field('email', 'email', 'votre.email@mail.com')
-                    +field('password', 'password', 'Mot de passe')
-                    +field('password', 'confirmPassword', 'Confirmer le mot de passe')
+                    +field('text', 'firstName', 'Prénom', true)
+                    +field('text', 'lastName', 'Nom de famille', true)
+                    +field('email', 'email', 'votre.email@mail.com', true)
+                    +field('password', 'password', 'Mot de passe', true)
+                    +field('password', 'confirmPassword', 'Confirmer le mot de passe', true)
                     button(type="submit").ui.fluid.large.teal.submit.button M'inscrire
 
                 .ui.error.message
 
 
-mixin field(type, name, placeholder)
+mixin field(type, name, placeholder, required = true)
     .field
         .ui.left.icon.input
             i.icon(class=(type === 'password' ? 'lock' : 'user'))
-            input(type=type, name=name, placeholder=placeholder)
+            input(type=type, name=name, placeholder=placeholder, required=required)
