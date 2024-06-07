@@ -125,6 +125,9 @@ export const login = async (req, res) => {
 
     const token = await user.createJWT();
     req.session.token = token;
+    req.session.auth = {
+      isLogged: true,
+    };
 
     res.status(301).redirect('/dashboard');
   } catch (error) {

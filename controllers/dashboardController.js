@@ -3,15 +3,14 @@ import User from '../Models/User.js';
 export const renderDashboard = async (req, res) => {
   const userId = req.userId;
 
-  console.log(userId);
-
   const user = await User.find({ _id: userId });
+  console.log(user);
 
   if (!user) {
-    console.log('NO USER');
+    return res.status(301).redirect('/login');
   }
 
   console.log('user found !', user);
 
-  res.status(200).json({ message: 'Bienvenue sur votre Dashboard' });
+  res.render('dashboard');
 };
