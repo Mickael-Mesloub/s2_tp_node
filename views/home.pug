@@ -1,16 +1,20 @@
 extends layouts/frontend
 
+block title
+    title TP Node S2 - Home
+
 block content
     .ui.middle.aligned.center.aligned.grid
         .six.wide.column
+            h2 Inscrivez-vous
             form.ui.large.form(method="post", action="/")
                 .ui.stacked.segment
-                    +field('text', 'firstName', 'First name')
-                    +field('text', 'lastName', 'Last name')
-                    +field('email', 'email', 'your.email@address.tld')
-                    +field('password', 'password', 'Password')
-                    +field('password', 'password_confirm', 'Confirm password')
-                    button(type="submit").ui.fluid.large.teal.submit.button Login
+                    +field('text', 'firstName', 'Prénom')
+                    +field('text', 'lastName', 'Nom de famille')
+                    +field('email', 'email', 'votre.email@mail.com')
+                    +field('password', 'password', 'Mot de passe')
+                    +field('password', 'confirmPassword', 'Confirmer le mot de passe')
+                    button(type="submit").ui.fluid.large.teal.submit.button M'inscrire
 
                 .ui.error.message
 

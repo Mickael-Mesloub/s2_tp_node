@@ -10,15 +10,15 @@ html(lang="en")
         script(src="//unpkg.com/semantic-ui@2.4.2/dist/semantic.min.js")
         block scripts
 
-        title Hello Express Pug App!
+        block title
     body
 
         .ui.inverted.menu
-            a.item.active
+            a(href='/').item
                 i.home.icon
                 | Home
-            a.item
-                i.file.icon
-                | Posts
+            a(href="/login").item
+                i.user.icon
+                | Login
 
         block content
