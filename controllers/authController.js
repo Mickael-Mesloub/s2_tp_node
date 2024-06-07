@@ -15,9 +15,9 @@ export const register = async (req, res) => {
       confirmPassword,
     } = trimData(req.body);
 
-    // ==========
-    // INPUT SECURIZATION AND VALIDATION
-    // ==========
+    // ============================== \\
+    // SECURITY AND VALIDATION CHECKS \\
+    // ============================== \\
 
     let errors = [];
 
@@ -89,33 +89,34 @@ export const register = async (req, res) => {
       errors.push(validationMessages.required('Confirmer le mot de passe'));
     }
 
-    if (errors.length > 0) {
-      req.flash('errors', errors.join(', '));
-      return res.status(400).json({
-        message: errors.join(', '),
-      });
+    // check if password and confirmPassword are the same and if not, push new error
+    if (passwordInput !== confirmPassword) {
+      errors.push(validationMessages.confirmPasswordWrong);
     }
+
+    // ---------- Check if user already exists ---------- \\
 
     const isUserExists = await User.findOne(
       { email: emailInput.toLowerCase() },
       { _id: 0, email: 1 }
     );
 
-    // check if user already exists in db and if so, return error
+    // check if user already exists in db and if so, push new error in errors array
     if (isUserExists) {
-      return res.status(400).json({ message: validationMessages.userExists });
+      errors.push(validationMessages.userExists);
     }
 
-    // check if password and confirmPassword are the same and if not, return error
-    if (passwordInput !== confirmPassword) {
-      return res
-        .status(400)
-        .json({ message: validationMessages.confirmPasswordWrong });
+    // ---------- END OF SECURITY AND VALIDATION CHECKS ---------- \\
+
+    // after all these security and validation checks, send errors array in req.flash to display error messages
+    if (errors.length > 0) {
+      req.flash('errors', errors);
+      return res.status(301).redirect('/');
     }
 
-    // ==========
-    // SAVE DATA
-    // ==========
+    // =================== \\
+    // SAVE NEW USER IN DB \\
+    // =====================\\
 
     const newUser = new User({
       firstName: capitalize(firstNameInput),
@@ -136,9 +137,9 @@ export const login = async (req, res) => {
   try {
     const { email: emailInput, password: passwordInput } = trimData(req.body);
 
-    // ==========
-    // INPUT SECURIZATION AND VALIDATION
-    // ==========
+    // ============================== \\
+    // SECURITY AND VALIDATION CHECKS \\
+    // ============================== \\
 
     let errors = [];
 
@@ -185,9 +186,9 @@ export const login = async (req, res) => {
         .json({ message: validationMessages.incorrectCredentials });
     }
 
-    // ==========
-    // IF EVERYTHING IS OK, CREATE JWT, STORE IT IN SESSION AND SET ISLOOGED = TRUE IN SESSION.AUTH
-    // ==========
+    // ============================================================================================ \\
+    // IF EVERYTHING IS OK, CREATE JWT, STORE IT IN SESSION AND SET ISLOOGED = TRUE IN SESSION.AUTH \\
+    // ============================================================================================ \\
 
     const token = await user.createJWT();
     req.session.token = token;

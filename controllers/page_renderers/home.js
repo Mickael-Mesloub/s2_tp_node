@@ -1,3 +1,5 @@
 export const renderHome = (req, res) => {
-  res.render('home', { errors: req.flash('errors') });
+  const flashErrors = req.flash('errors');
+
+  res.render('home', { flashErrors });
 };

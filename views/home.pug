@@ -7,6 +7,13 @@ block content
     .ui.middle.aligned.center.aligned.grid
         .six.wide.column
             h2 Inscrivez-vous
+            each error in flashErrors
+                .ui.icon.message.red 
+                    i.icon.exclamation.circle
+                    .content
+                        .ui.header
+                            | Erreur 
+                        p #{error}
             form.ui.large.form(method="post", action="/")
                 .ui.stacked.segment
                     +field('text', 'firstName', 'Prénom', true, 2, 255)
