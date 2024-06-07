@@ -126,11 +126,7 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
-    res.status(201).json({
-      message: `Inscription réussie ! Bienvenue sur l'application ${capitalize(
-        firstNameInput
-      )} ${capitalize(lastNameInput)}`,
-    });
+    res.status(301).redirect('/login');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
