@@ -147,12 +147,17 @@ export const login = async (req, res) => {
         .json({ message: validationMessages.incorrectCredentials });
     }
 
+    // ==========
+    // IF EVERYTHING IS OK, CREATE JWT, STORE IT IN SESSION AND SET ISLOOGED = TRUE IN SESSION.AUTH
+    // ==========
+
     const token = await user.createJWT();
     req.session.token = token;
     req.session.auth = {
       isLogged: true,
     };
 
+    // user is redirected to his dashboard once he's logged in
     res.status(301).redirect('/dashboard');
   } catch (error) {
     res.status(500).json({ error: error.message });
