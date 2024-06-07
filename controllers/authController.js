@@ -111,7 +111,7 @@ export const register = async (req, res) => {
     // after all these security and validation checks, send errors array in req.flash to display error messages
     if (errors.length > 0) {
       req.flash('errors', errors);
-      return res.status(301).redirect('/');
+      return res.status(301).redirect('back');
     }
 
     // =================== \\
@@ -158,35 +158,33 @@ export const login = async (req, res) => {
       errors.push(validationMessages.required('Mot de passe'));
     }
 
-    if (errors.length > 0) {
-      return res.status(400).json({
-        message: errors.join(', '),
-      });
-    }
-
     // retrieve the user in DB, filtering by email
     const user = await User.findOne({
       email: emailInput.toLowerCase(),
     });
 
-    // if credentials are incorrect, return error
+    // if credentials are incorrect, add error in errors array and reload page
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: validationMessages.incorrectCredentials });
+      errors.push(validationMessages.incorrectCredentials);
+      req.flash('errors', errors);
+      return res.status(301).redirect('back');
     }
 
     // compare the password sent by client and the password stored in DB
-    const isPasswordMatch = await user.comparePassword(
-      passwordInput,
-      user.password
-    );
+    const isPasswordMatch = await user.comparePassword(passwordInput);
 
-    // check if the password sent by client matches the password stored in DB and return an error if not
+    // check if the password sent by client matches the password stored in DB and add error in errors array if not
     if (!isPasswordMatch) {
-      return res
-        .status(400)
-        .json({ message: validationMessages.incorrectCredentials });
+      errors.push(validationMessages.incorrectCredentials);
+    }
+
+    // ---------- END OF SECURITY AND VALIDATION CHECKS ---------- \\
+
+    // after all these security and validation checks, send errors array in req.flash to display error messages
+
+    if (errors.length > 0) {
+      req.flash('errors', errors);
+      return res.status(301).redirect('back');
     }
 
     // ============================================================================================ \\
