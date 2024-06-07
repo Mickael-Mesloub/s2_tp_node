@@ -20,12 +20,36 @@ export const register = async (req, res) => {
     );
 
     // ==========
-    // INPUT SECURIZATION
+    // INPUT SECURIZATION AND VALIDATION
     // ==========
 
+    let errors = [];
+    if (!firstNameInput || isEmpty(firstNameInput)) {
+      errors.push(validationMessages.required('Prénom'));
+    }
+    if (!lastNameInput || isEmpty(lastNameInput)) {
+      errors.push(validationMessages.required('Nom de famille'));
+    }
+
+    if (!emailInput || isEmpty(emailInput)) {
+      errors.push(validationMessages.required('Email'));
+    }
+
+    if (!isEmail(emailInput)) {
+      errors.push(validationMessages.invalidEmail);
+    }
+
+    if (!passwordInput || isEmpty(passwordInput)) {
+      errors.push(validationMessages.required('Mot de passe'));
+    }
+
     if (!confirmPassword || isEmpty(confirmPassword)) {
+      errors.push(validationMessages.required('Confirmer le mot de passe'));
+    }
+
+    if (errors.length > 0) {
       return res.status(400).json({
-        message: validationMessages.required('Confirmer le mot de passe'),
+        message: errors.join(', '),
       });
     }
 
@@ -75,7 +99,7 @@ export const login = async (req, res) => {
     console.log(`- email: ${emailInput}\n- password: ${passwordInput}`);
 
     // ==========
-    // INPUT SECURIZATION
+    // INPUT SECURIZATION AND VALIDATION
     // ==========
 
     let errors = [];

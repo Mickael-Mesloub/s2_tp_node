@@ -5,7 +5,7 @@ export const validationMessages = {
   maxLength: (field, max) => `${field} ne peut pas dépasser ${max} caractères`,
   invalidEmail: `Veuillez entrer un email valide`,
   nameFields: (field) =>
-    `${field} est invalide. Il ne peut contenir que des lettres, un trait d'union, une apostrophe`,
+    `${field} est invalide. Il doit contenir des lettres. Les traits d'union et apostrophes sont les seuls caractères spéciaux acceptés.`,
   weakPassword:
     'Le mot de passe doit contenir au moins 1 minuscule, 1 majuscule et 1 chiffre',
   userExists: `Cet utilisateur existe déjà. Veuillez entrer une nouvelle adresse mail`,
