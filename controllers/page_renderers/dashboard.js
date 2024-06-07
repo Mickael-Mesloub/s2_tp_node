@@ -1,3 +1,3 @@
-export const renderLogin = (req, res) => {
+export const renderDashboard = (req, res) => {
   res.render('dashboard');
 };
