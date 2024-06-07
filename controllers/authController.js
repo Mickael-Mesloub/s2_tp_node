@@ -15,10 +15,6 @@ export const register = async (req, res) => {
       confirmPassword,
     } = trimData(req.body);
 
-    console.log(
-      `- firstName: ${firstNameInput}\n- lastName: ${lastNameInput}\n- email: ${emailInput}\n- password: ${passwordInput}\n- confirmPassword: ${confirmPassword}`
-    );
-
     // ==========
     // INPUT SECURIZATION AND VALIDATION
     // ==========
@@ -96,7 +92,6 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email: emailInput, password: passwordInput } = trimData(req.body);
-    console.log(`- email: ${emailInput}\n- password: ${passwordInput}`);
 
     // ==========
     // INPUT SECURIZATION AND VALIDATION
