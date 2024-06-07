@@ -3,7 +3,7 @@ import User from '../Models/User.js';
 export const renderDashboard = async (req, res) => {
   const userId = req.userId;
 
-  const user = await User.find({ _id: userId });
+  const user = await User.findOne({ _id: userId });
   console.log(user);
 
   if (!user) {
@@ -12,5 +12,5 @@ export const renderDashboard = async (req, res) => {
 
   console.log('user found !', user);
 
-  res.render('dashboard');
+  res.render('dashboard', { user });
 };

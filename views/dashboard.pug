@@ -6,4 +6,5 @@ block title
 block content
     .ui.middle.aligned.center.aligned.grid
         .six.wide.column
-            h2 Bienvenue sur votre dashboard !
+            h2 Bienvenue sur votre dashboard #{user.firstName} #{user.lastName}!
+            a(href="/logout").ui.fluid.large.red.button Me déconnecter

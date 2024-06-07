@@ -163,3 +163,25 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    const session = req.session;
+
+    // if there is a session, destroys it, and doing so, removes jwt and isLogged variable stored in session
+    if (session) {
+      await session.destroy((error) => {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        }
+        // once the session is destroyed, redirects user to main page
+        return res.status(301).redirect('/');
+      });
+    } else {
+      // if no session is found, redirects user to main page
+      res.status(301).redirect('/');
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
