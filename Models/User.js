@@ -44,7 +44,7 @@ const userSchema = new Schema(
       maxlength: [255, validationMessages.maxLength("L'email", 255)],
       validate: {
         validator: (v) => validator.isEmail(v),
-        message: validationMessages.email,
+        message: validationMessages.invalidEmail,
       },
     },
     password: {
@@ -61,6 +61,7 @@ const userSchema = new Schema(
             minLength: 6,
             returnScore: true,
           }),
+        message: validationMessages.weakPassword,
       },
     },
   },
@@ -74,6 +75,12 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+
+// compare password sent by client with password stored in db
+userSchema.methods.comparePassword = async function (passwordInput) {
+  const hashedPasswordInput = await hashPassword(passwordInput);
+  return hashedPasswordInput === this.password;
+};
 
 userSchema.methods.createJWT = function () {
   return jwt.sign(
