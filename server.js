@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
 import route from './routes/routes.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
+import flash from 'connect-flash';
 
 dotenv.config();
 const {
@@ -43,6 +43,7 @@ const init = async () => {
       saveUninitialized: true,
     })
   );
+  app.use(flash());
 
   // ==========
   // App routers

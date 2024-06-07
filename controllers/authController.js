@@ -3,7 +3,7 @@ import User from '../Models/User.js';
 import { capitalize, trimData } from '../utils/utils.js';
 import { validationMessages } from '../validation/validationMessages.js';
 
-const { isEmpty, isEmail } = validator;
+const { isEmpty, isEmail, isLength, isStrongPassword } = validator;
 
 export const register = async (req, res) => {
   try {
@@ -20,30 +20,77 @@ export const register = async (req, res) => {
     // ==========
 
     let errors = [];
+
+    // ---------- Firstname validation ----------- \\
+
     if (!firstNameInput || isEmpty(firstNameInput)) {
       errors.push(validationMessages.required('Prénom'));
     }
+    if (!isLength(firstNameInput, { min: 2 })) {
+      errors.push(validationMessages.minLength('Le prénom', 2));
+    }
+    if (!isLength(firstNameInput, { max: 255 })) {
+      errors.push(validationMessages.maxLength('Le prénom', 255));
+    }
+
+    // ---------- Lastname validation ----------- \\
+
     if (!lastNameInput || isEmpty(lastNameInput)) {
       errors.push(validationMessages.required('Nom de famille'));
     }
+    if (!isLength(lastNameInput, { min: 2 })) {
+      errors.push(validationMessages.minLength('Le Nom de famille', 2));
+    }
+    if (!isLength(lastNameInput, { max: 255 })) {
+      errors.push(validationMessages.maxLength('Le Nom de famille', 255));
+    }
+
+    // ---------- Email validation ----------- \\
 
     if (!emailInput || isEmpty(emailInput)) {
       errors.push(validationMessages.required('Email'));
+    }
+
+    if (!isLength(emailInput, { max: 255 })) {
+      errors.push(validationMessages.maxLength("L'email", 255));
     }
 
     if (!isEmail(emailInput)) {
       errors.push(validationMessages.invalidEmail);
     }
 
+    // ---------- Password validation ----------- \\
+
     if (!passwordInput || isEmpty(passwordInput)) {
       errors.push(validationMessages.required('Mot de passe'));
     }
+    if (!isLength(passwordInput, { min: 6 })) {
+      errors.push(validationMessages.minLength('Le mot de passe', 6));
+    }
+    if (!isLength(passwordInput, { max: 255 })) {
+      errors.push(validationMessages.maxLength('Le mot de passe', 255));
+    }
+    if (
+      !isStrongPassword(passwordInput, {
+        minLength: 6,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 0,
+        returnScore: false,
+      })
+    ) {
+      errors.push(validationMessages.weakPassword);
+    }
+
+    // ---------- Confirm password validation ----------- \\
 
     if (!confirmPassword || isEmpty(confirmPassword)) {
       errors.push(validationMessages.required('Confirmer le mot de passe'));
     }
 
     if (errors.length > 0) {
+      req.flash('errors', errors.join(', '));
       return res.status(400).json({
         message: errors.join(', '),
       });
