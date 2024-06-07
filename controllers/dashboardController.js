@@ -1,6 +1,6 @@
 import User from '../Models/User.js';
 
-export const getDashboard = async (req, res) => {
+export const renderDashboard = async (req, res) => {
   const userId = req.userId;
 
   console.log(userId);
