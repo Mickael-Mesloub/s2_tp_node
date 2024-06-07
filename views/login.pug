@@ -7,6 +7,13 @@ block content
     .ui.middle.aligned.center.aligned.grid
         .six.wide.column
             h2 Connectez-vous
+            each success in flashSuccess
+                .ui.icon.message.green 
+                    i.icon.check.circle
+                    .content
+                        .ui.header
+                            | Félicitations ! 
+                        p #{success}
             form.ui.large.form(method="post", action="/login")
                 .ui.stacked.segment
                     +field('email', 'email', 'votre.email@mail.com', true)

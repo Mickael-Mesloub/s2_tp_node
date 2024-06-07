@@ -127,6 +127,9 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
+    const registerSuccessMsg = `Inscription réussie ! Vous pouvez maintenant vous connecter`;
+    req.flash('success', [registerSuccessMsg]);
+
     res.status(301).redirect('/login');
   } catch (error) {
     res.status(500).json({ error: error.message });
