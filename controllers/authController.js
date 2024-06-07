@@ -59,7 +59,7 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Inscription réussie ! Bienvenue sur l'application ${capitalize(
         firstNameInput
       )} ${capitalize(lastNameInput)}`,
@@ -124,8 +124,9 @@ export const login = async (req, res) => {
     }
 
     const token = await user.createJWT();
+    req.session.token = token;
 
-    res.status(200).json({ message: `Vous êtes bien connecté !`, token });
+    res.status(301).redirect('/dashboard');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

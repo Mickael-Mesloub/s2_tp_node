@@ -5,9 +5,17 @@ import { fileURLToPath } from 'url';
 
 import route from './routes/routes.js';
 import mongoose from 'mongoose';
+import session from 'express-session';
 
 dotenv.config();
-const { APP_HOSTNAME, APP_PORT, NODE_ENV, MONGO_URI } = process.env;
+const {
+  APP_HOSTNAME,
+  APP_PORT,
+  NODE_ENV,
+  MONGO_URI,
+  SESSION_NAME,
+  SESSION_SECRET,
+} = process.env;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -27,6 +35,14 @@ const init = async () => {
 
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.urlencoded({ extended: false }));
+  app.use(
+    session({
+      name: SESSION_NAME,
+      secret: SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true,
+    })
+  );
 
   // ==========
   // App routers
