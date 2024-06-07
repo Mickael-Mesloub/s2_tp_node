@@ -1,9 +1,9 @@
 import validator from 'validator';
 import User from '../Models/User.js';
-import { capitalize, comparePassword, trimData } from '../utils/utils.js';
+import { capitalize, trimData } from '../utils/utils.js';
 import { validationMessages } from '../validation/validationMessages.js';
 
-const { isEmpty } = validator;
+const { isEmpty, isEmail } = validator;
 
 export const register = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
     }
 
     const isUserExists = await User.findOne(
-      { email: emailInput },
+      { email: emailInput.toLowerCase() },
       { _id: 0, email: 1 }
     );
 
@@ -60,7 +60,9 @@ export const register = async (req, res) => {
     await newUser.save();
 
     res.status(200).json({
-      message: `Inscription réussie ! Bienvnue sur l'application ${firstNameInput}`,
+      message: `Inscription réussie ! Bienvenue sur l'application ${capitalize(
+        firstNameInput
+      )} ${capitalize(lastNameInput)}`,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -80,6 +82,10 @@ export const login = async (req, res) => {
 
     if (!emailInput || isEmpty(emailInput)) {
       errors.push(validationMessages.required('Email'));
+    }
+
+    if (!isEmail(emailInput)) {
+      errors.push(validationMessages.invalidEmail);
     }
 
     if (!passwordInput || isEmpty(passwordInput)) {
@@ -105,7 +111,10 @@ export const login = async (req, res) => {
     }
 
     // compare the password sent by client and the password stored in DB
-    const isPasswordMatch = await comparePassword(passwordInput, user.password);
+    const isPasswordMatch = await user.comparePassword(
+      passwordInput,
+      user.password
+    );
 
     // check if the password sent by client matches the password stored in DB and return an error if not
     if (!isPasswordMatch) {

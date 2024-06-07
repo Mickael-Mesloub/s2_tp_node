@@ -24,9 +24,3 @@ export const hashPassword = (password) => {
   sha256hasher.update(password);
   return sha256hasher.digest('hex');
 };
-
-// compare passwords
-export const comparePassword = async (passwordInput, storedPassword) => {
-  const hashedPasswordInput = await hashPassword(passwordInput);
-  return hashedPasswordInput === storedPassword;
-};
