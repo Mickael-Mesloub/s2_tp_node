@@ -18,7 +18,13 @@ block content
                     i.icon.check.circle
                     .content
                         .ui.header
-                            | #{success} 
+                            | #{success}
+            each warning in flashWarnings
+                .ui.icon.warning.message 
+                    i.icon.exclamation.triangle
+                    .content
+                        .ui.header
+                            | #{warning}
             form.ui.large.form(method="post", action="/login")
                 .ui.stacked.segment
                     +field('email', 'email', 'votre.email@mail.com', true)
