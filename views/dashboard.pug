@@ -6,5 +6,11 @@ block title
 block content
     .ui.middle.aligned.center.aligned.grid
         .six.wide.column
+            each success in flashSuccess
+                .ui.icon.success.message 
+                    i.icon.check.circle
+                    .content
+                        .ui.header
+                            | #{success}
             h2 Bienvenue sur votre dashboard #{user.firstName} #{user.lastName}!
             a(href="/logout").ui.fluid.large.red.button Me déconnecter

@@ -8,12 +8,10 @@ block content
         .six.wide.column
             h2 Inscrivez-vous
             each error in flashErrors
-                .ui.icon.message.red 
+                .ui.icon.error.message 
                     i.icon.exclamation.circle
-                    .content
                         .ui.header
-                            | Erreur 
-                        p #{error}
+                            | #{error}
             form.ui.large.form(method="post", action="/")
                 .ui.stacked.segment
                     +field('text', 'firstName', 'Prénom', true, 2, 255)
@@ -22,9 +20,6 @@ block content
                     +field('password', 'password', 'Mot de passe', true, 6, 255)
                     +field('password', 'confirmPassword', 'Confirmer le mot de passe', true, 6, 255)
                     button(type="submit").ui.fluid.large.teal.submit.button M'inscrire
-
-                .ui.error.message
-
 
 mixin field(type, name, placeholder, required = true, min, max)
     .field
