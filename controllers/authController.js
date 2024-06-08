@@ -197,6 +197,9 @@ export const login = async (req, res) => {
       isLogged: true,
     };
 
+    const loginSuccessMsg = `Vous êtes connecté !`;
+    req.flash('success', [loginSuccessMsg]);
+
     // user is redirected to his dashboard once he's logged in
     res.status(301).redirect('/dashboard');
   } catch (error) {
