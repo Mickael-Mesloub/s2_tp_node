@@ -8,10 +8,11 @@ block content
         .six.wide.column
             h2 Inscrivez-vous
             each error in flashErrors
-                .ui.icon.error.message 
+                .ui.icon.message.error 
                     i.icon.exclamation.circle
+                    .content
                         .ui.header
-                            | #{error}
+                            | #{error}  
             form.ui.large.form(method="post", action="/")
                 .ui.stacked.segment
                     +field('text', 'firstName', 'Prénom', true, 2, 255)
