@@ -44,7 +44,10 @@ const init = async () => {
       saveUninitialized: true,
     })
   );
+  // middleware to display success/warning/error... flash messages
   app.use(flash());
+
+  // middleware to set isLogged value in locals variable, to access this data from views (e.g. in pug files)
   app.use(setIsLogged);
 
   // ==========
