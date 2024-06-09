@@ -2,6 +2,7 @@ import validator from 'validator';
 import User from '../Models/User.js';
 import { capitalize, trimData } from '../utils/utils.js';
 import { validationMessages } from '../validation/validationMessages.js';
+import { validationRules } from '../validation/validationRules.js';
 
 const { isEmpty, isEmail, isLength, isStrongPassword } = validator;
 
@@ -32,6 +33,9 @@ export const register = async (req, res) => {
     if (!isLength(firstNameInput, { max: 255 })) {
       errors.push(validationMessages.maxLength('Le prénom', 255));
     }
+    if (!validationRules.nameFields.test(firstNameInput)) {
+      errors.push(validationMessages.nameFields('Le prénom'));
+    }
 
     // ---------- Lastname validation ----------- \\
 
@@ -43,6 +47,9 @@ export const register = async (req, res) => {
     }
     if (!isLength(lastNameInput, { max: 255 })) {
       errors.push(validationMessages.maxLength('Le Nom de famille', 255));
+    }
+    if (!validationRules.nameFields.test(lastNameInput)) {
+      errors.push(validationMessages.nameFields('Le nom de famille'));
     }
 
     // ---------- Email validation ----------- \\
@@ -69,6 +76,9 @@ export const register = async (req, res) => {
     }
     if (!isLength(passwordInput, { max: 255 })) {
       errors.push(validationMessages.maxLength('Le mot de passe', 255));
+    }
+    if (!validationRules.password.test(passwordInput)) {
+      errors.push(validationMessages.invalidCharacters('Le mot de passe'));
     }
     if (
       !isStrongPassword(passwordInput, {

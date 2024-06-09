@@ -11,4 +11,6 @@ export const validationMessages = {
   userExists: `Cet utilisateur existe déjà. Veuillez entrer une nouvelle adresse mail`,
   confirmPasswordWrong: `Les 2 mots de passe ne correspondent pas. Veuillez réessayer`,
   incorrectCredentials: `Identifiants incorrects. Veuillez réessayer`,
+  invalidCharacters: (field) =>
+    `${field} ne doit pas contenir les caractères suivants : <, >, (, ), {, }, \\, et \``,
 };

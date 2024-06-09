@@ -53,14 +53,17 @@ const userSchema = new Schema(
       minlength: [6, validationMessages.minLength('Le mot de passe', 6)],
       maxlength: [255, validationMessages.maxLength('Le mot de passe', 255)],
       validate: {
-        validator: (v) =>
-          validator.isStrongPassword(v, {
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minLength: 6,
-            returnScore: true,
-          }),
+        validator: (v) => {
+          return (
+            validationRules.password.test(v) &&
+            validator.isStrongPassword(v, {
+              minLowercase: 1,
+              minUppercase: 1,
+              minNumbers: 1,
+              minSymbols: 1,
+            })
+          );
+        },
         message: validationMessages.weakPassword,
       },
     },
