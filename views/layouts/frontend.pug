@@ -17,8 +17,13 @@ html(lang="en")
             a(href='/').item
                 i.home.icon
                 | Home
-            a(href="/login").item
-                i.user.icon
-                | Login
+            if isLogged
+                a(href="/dashboard").item
+                    i.dashboard.icon
+                    | Dashboard
+            else
+                a(href="/login").item
+                    i.user.icon
+                    | Login
 
         block content

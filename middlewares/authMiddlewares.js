@@ -27,3 +27,8 @@ export const verifyToken = async (req, res, next) => {
     next();
   });
 };
+
+export const setIsLogged = (req, res, next) => {
+  res.locals.isLogged = req.session.auth && req.session.auth.isLogged;
+  next();
+};

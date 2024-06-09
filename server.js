@@ -6,6 +6,7 @@ import route from './routes/routes.js';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import flash from 'connect-flash';
+import { setIsLogged } from './middlewares/authMiddlewares.js';
 
 dotenv.config();
 const {
@@ -44,6 +45,7 @@ const init = async () => {
     })
   );
   app.use(flash());
+  app.use(setIsLogged);
 
   // ==========
   // App routers
